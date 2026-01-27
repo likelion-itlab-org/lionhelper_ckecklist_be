@@ -179,3 +179,80 @@ def get_combined_task_status():
     except Exception as e:
         logging.error("Error retrieving combined task status", exc_info=True)
         return jsonify({"success": False, "message": "체크율 정보를 불러오는데 실패했습니다."}), 500
+
+
+@admin_bp.route('/admin/task_logs', methods=['GET'])
+def get_task_logs():
+    """
+    특정 훈련 과정의 업무 체크리스트 로그 조회 API
+    ---
+    tags:
+      - Admin
+    summary: "특정 과정의 업무 체크리스트 이력을 조회합니다."
+    parameters:
+      - name: training_course
+        in: query
+        type: string
+        required: true
+        description: "조회할 훈련 과정명"
+    responses:
+      200:
+        description: 체크리스트 로그 데이터 반환
+      400:
+        description: 훈련 과정명 누락
+      500:
+        description: 로그 조회 실패
+    """
+    try:
+        training_course = request.args.get('training_course')
+        
+        if not training_course:
+            return jsonify({
+                "success": False, 
+                "message": "훈련 과정명이 필요합니다."
+            }), 400
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT 
+                tc.id,
+                ti.task_name,
+                ti.task_category,
+                tc.is_checked,
+                tc.checked_date,
+                tc.username
+            FROM task_checklist tc
+            JOIN task_items ti ON tc.task_id = ti.id
+            WHERE tc.training_course = %s
+            ORDER BY tc.checked_date DESC, ti.task_category, ti.id
+        ''', (training_course,))
+
+        results = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        logs = []
+        for row in results:
+            logs.append({
+                "id": row[0],
+                "task_name": row[1],
+                "task_category": row[2],
+                "is_checked": row[3],
+                "checked_date": row[4].strftime("%Y-%m-%d %H:%M") if row[4] else None,
+                "username": row[5] if row[5] else "미확인"
+            })
+
+        return jsonify({
+            "success": True, 
+            "training_course": training_course,
+            "data": logs
+        }), 200
+
+    except Exception as e:
+        logging.error("Error retrieving task logs", exc_info=True)
+        return jsonify({
+            "success": False, 
+            "message": "체크리스트 로그 조회 실패"
+        }), 500
