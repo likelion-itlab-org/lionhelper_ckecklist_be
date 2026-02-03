@@ -195,7 +195,7 @@ class UncheckedService(BaseService):
                 {
                     "id": comment.id,
                     "comment": comment.comment,
-                    "created_at": comment.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                    "created_at": comment.created_at,
                     "unchecked_id": comment.unchecked_id,
                 }
                 for comment in comments_query.all()
