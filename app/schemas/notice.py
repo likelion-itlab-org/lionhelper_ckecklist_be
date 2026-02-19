@@ -45,7 +45,7 @@ class NoticeCreateSchema(Schema):
     type = fields.Str()
     title = fields.Str(required=True)  # nullable=False
     content = fields.Str(required=True)  # nullable=False
-    created_by = fields.Str()
+    created_by = fields.Str(data_key="username")  # 프론트엔드에서 username으로 전달
 
 
 class NoticeUpdateSchema(Schema):
