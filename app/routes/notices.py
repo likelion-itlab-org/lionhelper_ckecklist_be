@@ -180,7 +180,7 @@ def add_notice():
         
         # Slack 알림 전송 (channel -> channel_type으로 수정)
         notifier = SlackNotifier()
-        notification_message = f"새로운 공지사항이 등록되었습니다!\n제목: {notice_data['title']}\n작성자: {notice_data['username']}"
+        notification_message = f"새로운 공지사항이 등록되었습니다!\n제목: {notice_data['title']}\n작성자: {notice_data['created_by']}"
         notifier.send_notification(notification_message, channel_type="notice")
 
         return json_response(notice_data, message="공지사항이 성공적으로 생성되었습니다.", status_code=201)

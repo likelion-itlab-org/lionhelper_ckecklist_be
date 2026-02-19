@@ -13,7 +13,7 @@ class NoticeService(BaseService):
     """공지사항 관련 비즈니스 로직 처리"""
 
     # 공지사항 작성 권한이 있는 사용자 목록
-    ALLOWED_USERS = ["admin", "김은지", "장지연", "김슬기"]
+    ALLOWED_USERS = ["김은지", "장지연", "test"]
 
     @staticmethod
     def create_notice(notice_data: Dict) -> Dict:
