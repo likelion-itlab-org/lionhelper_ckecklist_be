@@ -81,8 +81,8 @@ class UserService(BaseService):
         if len(password) < 8:
             return False, "비밀번호는 최소 8자 이상이어야 합니다."
 
-        if not re.search(r"[A-Z]", password):
-            return False, "비밀번호는 대문자를 포함해야 합니다."
+        # if not re.search(r"[A-Z]", password):
+        #     return False, "비밀번호는 대문자를 포함해야 합니다."
 
         if not re.search(r"[a-z]", password):
             return False, "비밀번호는 소문자를 포함해야 합니다."
