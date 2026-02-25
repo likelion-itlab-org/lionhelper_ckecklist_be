@@ -44,8 +44,8 @@ class UserCreateSchema(Schema):
         if len(value) < 8:
             raise ValidationError("비밀번호는 최소 8자 이상이어야 합니다.")
 
-        if not re.search(r"[A-Z]", value):
-            raise ValidationError("비밀번호는 대문자를 포함해야 합니다.")
+        # if not re.search(r"[A-Z]", value):
+        #     raise ValidationError("비밀번호는 대문자를 포함해야 합니다.")
 
         if not re.search(r"[a-z]", value):
             raise ValidationError("비밀번호는 소문자를 포함해야 합니다.")
@@ -94,8 +94,8 @@ class PasswordChangeSchema(Schema):
         if len(value) < 8:
             raise ValidationError("비밀번호는 최소 8자 이상이어야 합니다.")
 
-        if not re.search(r"[A-Z]", value):
-            raise ValidationError("비밀번호는 대문자를 포함해야 합니다.")
+        # if not re.search(r"[A-Z]", value):
+        #     raise ValidationError("비밀번호는 대문자를 포함해야 합니다.")
 
         if not re.search(r"[a-z]", value):
             raise ValidationError("비밀번호는 소문자를 포함해야 합니다.")
